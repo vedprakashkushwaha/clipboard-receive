@@ -1,6 +1,8 @@
 const express = require('express');
 const redis = require('redis');
+var cors = require('cors')
 const app = express();
+app.use(cors())
 const requestIP = require('request-ip');
 const port = 3333;
 let redisClient;
