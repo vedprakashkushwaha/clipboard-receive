@@ -17,7 +17,7 @@ redisClient.on('connect', function () {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post('/saveclipboard', async (req, res) => {
+app.post('/clipboard/saveclipboard', async (req, res) => {
     const ip = requestIP.getClientIp(req);
     const data = { ip, data: req.body.text };
     try {
@@ -35,7 +35,7 @@ app.post('/saveclipboard', async (req, res) => {
     }
 });
 
-app.get('/getclipboard', async (req, res) => {
+app.get('/clipboard/getclipboard', async (req, res) => {
     try {
         const cacheResults = await redisClient.get('clipboardData');
         res.json(JSON.parse(cacheResults))
