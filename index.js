@@ -24,8 +24,12 @@ app.post('/clipboard/saveclipboard', async (req, res) => {
         const cacheResults = await redisClient.get('clipboardData');
         if (cacheResults) {
             let cacheData = JSON.parse(cacheResults);
-            cacheData.push(data);
-            await redisClient.set('clipboardData', JSON.stringify(cacheData));
+            const len = cacheData.length;
+            if (cacheData[len - 1].data === data.data && cacheData[len - 1].ip === data.ip) {
+            } else {
+                cacheData.push(data);
+                await redisClient.set('clipboardData', JSON.stringify(cacheData));
+            }
         } else {
             await redisClient.set('clipboardData', JSON.stringify([data]));
         }
