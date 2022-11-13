@@ -3,7 +3,6 @@ const redis = require('redis');
 var cors = require('cors')
 const app = express();
 app.use(cors())
-const requestIP = require('request-ip');
 const port = 3333;
 let redisClient;
 (async () => {
@@ -20,8 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.post('/clipboard/saveclipboard', async (req, res) => {
-    const ip = requestIP.getClientIp(req);
-    const data = { ip, data: req.body.text };
+    const data = { ip: req.body.hostname ? req.body.hostname : "n/a", data: req.body.text };
     try {
         const cacheResults = await redisClient.get('clipboardData');
         if (cacheResults) {
